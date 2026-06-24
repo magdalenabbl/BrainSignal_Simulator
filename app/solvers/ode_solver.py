@@ -1,17 +1,16 @@
-# solvers/ode_solver.py
-
 from abc import ABC, abstractmethod
+from typing import Dict, Any
 
 
 class ODESolver(ABC):
-    """
-    Base class for all numerical ODE solvers.
-    Works with dict-based state systems.
-    """
+    """Base ODE solver interface."""
 
     @abstractmethod
-    def step(self, model, t: float, dt: float) -> dict:
-        """
-        Performs one integration step.
-        """
+    def step(
+        self,
+        model: Any,
+        t: float,
+        state: Dict[str, float],
+        dt: float
+    ) -> Dict[str, float]:
         pass
