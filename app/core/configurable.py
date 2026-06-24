@@ -1,14 +1,13 @@
-# core/configurable.py
+from abc import ABC
 
 
-class Configurable:
+class Configurable(ABC):
     """
-    Base class for runtime configuration injection.
+    Mixin for components that can be configured via dict/JSON.
     """
 
     def load_config(self, config: dict):
-        """
-        Load configuration parameters dynamically.
-        """
-        for key, value in config.items():
-            setattr(self, key, value)
+        self.config = config
+
+    def save_config(self) -> dict:
+        return getattr(self, "config", {})

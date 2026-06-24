@@ -1,24 +1,26 @@
-# core/scheduler.py
-
-
 class Scheduler:
     """
-    Controls simulation execution timing.
+    Controls simulation time progression.
     """
 
-    def __init__(self):
-        self.events = []
+    def __init__(self, dt: float = 0.01):
+        self.dt = dt
+        self.time = 0.0
+        self.running = False
 
-    def schedule(self, time: float, callback):
+    def step(self) -> float:
         """
-        Schedule a function at a specific simulation time.
+        Advance simulation time.
         """
-        self.events.append((time, callback))
+        self.time += self.dt
+        return self.time
 
-    def run(self, t: float):
-        """
-        Executes all events for current time step.
-        """
-        for event_time, callback in self.events:
-            if event_time <= t:
-                callback()
+    def reset(self):
+        self.time = 0.0
+        self.running = False
+
+    def start(self):
+        self.running = True
+
+    def stop(self):
+        self.running = False

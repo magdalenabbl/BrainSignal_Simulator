@@ -1,38 +1,22 @@
-# core/simulation_component.py
-
 from abc import ABC, abstractmethod
 
 
 class SimulationComponent(ABC):
     """
-    Base abstraction for all dynamic simulation objects.
-    Uses dict-based state for maximum flexibility.
+    Base interface for any component controlled by SimulationEngine.
     """
 
     @abstractmethod
-    def initialize(self) -> dict:
-        """
-        Returns initial state of the system.
-        """
+    def initialize(self):
+        """Initialize internal state."""
         pass
 
     @abstractmethod
-    def derivatives(self, t: float, state: dict) -> dict:
-        """
-        Computes time derivatives for the system.
-        """
+    def update(self, dt: float):
+        """Update component by timestep dt."""
         pass
 
     @abstractmethod
-    def set_state(self, state: dict):
-        """
-        Updates internal model state.
-        """
-        pass
-
-    @abstractmethod
-    def get_state(self) -> dict:
-        """
-        Returns current internal state.
-        """
+    def reset(self):
+        """Reset component to initial state."""
         pass

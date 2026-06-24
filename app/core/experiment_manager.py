@@ -1,25 +1,23 @@
-# core/experiment_manager.py
-
-from core.serializable import Serializable
-
-
-class ExperimentManager(Serializable):
+class ExperimentManager:
     """
-    Manages simulation experiments lifecycle.
+    Stores, runs, and compares simulation experiments.
     """
 
     def __init__(self):
-        self.experiments = []
+        self.experiments = {}
 
-    def create_experiment(self, config: dict):
-        self.experiments.append(config)
+    def create_experiment(self, name: str, config: dict):
+        self.experiments[name] = {
+            "config": config,
+            "results": None
+        }
+
+    def save_results(self, name: str, results):
+        if name in self.experiments:
+            self.experiments[name]["results"] = results
+
+    def get_experiment(self, name: str):
+        return self.experiments.get(name)
 
     def list_experiments(self):
-        return self.experiments
-
-    # Serialization
-    def to_dict(self):
-        return {"experiments": self.experiments}
-
-    def from_dict(self, data: dict):
-        self.experiments = data.get("experiments", [])
+        return list(self.experiments.keys())

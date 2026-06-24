@@ -1,36 +1,59 @@
-# solvers/adaptive_rk_solver.py
-
-from solvers.ode_solver import ODESolver
-from solvers.rk4_solver import RK4Solver
-from solvers.euler_solver import EulerSolver
+from typing import Dict, Any
 
 
-class AdaptiveRK(ODESolver):
+class RK4Solver:
     """
-    Adaptive step solver using error estimation.
+    Classic 4th-order Runge-Kutta solver for ODE systems.
+
+    Works with:
+    model.derivatives(t, state)
+    state: dict-based system state
     """
 
-    def __init__(self):
-        self.rk4 = RK4Solver()
-        self.euler = EulerSolver()
+    def step(
+        self,
+        model: Any,
+        t: float,
+        state: Dict[str, float],
+        dt: float
+    ) -> Dict[str, float]:
+        """
+        Perform one RK4 integration step.
+        """
 
-    def step(self, model, t: float, dt: float) -> dict:
+        # k1
+        k1 = model.derivatives(t, state)
 
-        state1 = self.euler.step(model, t, dt)
-        model.set_state(state1)
+        # k2 state
+        state_k2 = {
+            key: state[key] + 0.5 * dt * k1[key]
+            for key in state
+        }
+        k2 = model.derivatives(t + 0.5 * dt, state_k2)
 
-        state2 = self.rk4.step(model, t, dt)
+        # k3 state
+        state_k3 = {
+            key: state[key] + 0.5 * dt * k2[key]
+            for key in state
+        }
+        k3 = model.derivatives(t + 0.5 * dt, state_k3)
 
-        error = max(
-            abs(state2[k] - state1[k]) for k in state1.keys()
-        )
+        # k4 state
+        state_k4 = {
+            key: state[key] + dt * k3[key]
+            for key in state
+        }
+        k4 = model.derivatives(t + dt, state_k4)
 
-        # Adaptive step control (simplified)
-        if error > 0.01:
-            dt *= 0.5
-        elif error < 0.001:
-            dt *= 1.1
+        # final update
+        new_state = {}
 
-        model.set_state(state2)
+        for key in state:
+            new_state[key] = state[key] + (dt / 6.0) * (
+                k1[key]
+                + 2.0 * k2[key]
+                + 2.0 * k3[key]
+                + k4[key]
+            )
 
-        return state2
+        return new_state
