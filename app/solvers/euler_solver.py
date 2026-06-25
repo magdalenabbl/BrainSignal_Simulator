@@ -1,23 +1,30 @@
-# solvers/euler_solver.py
+from typing import Dict, Any
 
-from solvers.ode_solver import ODESolver
+from app.solvers.ode_solver import ODESolver
 
 
 class EulerSolver(ODESolver):
     """
-    Simple Euler integration method.
+    First order Euler ODE solver.
     """
 
-    def step(self, model, t: float, dt: float) -> dict:
-        state = model.get_state()
+    def step(
+        self,
+        model: Any,
+        t: float,
+        state: Dict[str, float],
+        dt: float
+    ) -> Dict[str, float]:
+        """
+        Perform Euler integration step.
+        """
 
-        derivatives = model.derivatives(t, state)
+        derivatives = model.derivatives(
+            t,
+            state
+        )
 
-        new_state = {
-            k: state[k] + dt * derivatives[k]
-            for k in state.keys()
+        return {
+            key: state[key] + dt * derivatives[key]
+            for key in state
         }
-
-        model.set_state(new_state)
-
-        return new_state
