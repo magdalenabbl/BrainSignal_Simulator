@@ -1,3 +1,5 @@
+from typing import Dict, Any
+
 from app.models.base_model import BaseModel
 
 from app.math.context import Context
@@ -5,34 +7,79 @@ from app.math.evaluator import Evaluator
 
 
 class LIFNeuron(BaseModel):
+    """
+    Leaky Integrate-and-Fire neuron model.
+    """
+
+    def __init__(
+        self,
+        params: Dict[str, Any] = None
+    ):
+        super().__init__(params)
+
+        """
+        Cache symbolic equation.
+        """
+        self.expression = self.build_expression()
 
     def initialize(self):
+        """
+        Returns initial membrane potential.
+        """
+
         self.state = {
-            "V": self.params.get("V_rest", -65.0)
+            "V": self.params.get(
+                "V_rest",
+                -65.0
+            )
         }
+
         return self.state
 
-    def derivatives(self, t, state):
+    def derivatives(
+        self,
+        t: float,
+        state: Dict[str, float]
+    ) -> Dict[str, float]:
+        """
+        Calculate membrane potential derivative.
+        """
 
         V = state["V"]
 
         context = Context({
             "V": V,
-            "V_rest": self.params.get("V_rest", -65.0),
-            "R": self.params.get("R", 1.0),
-            "I": self.params.get("I", 10.0),
-            "tau": self.params.get("tau", 10.0),
+            "V_rest": self.params.get(
+                "V_rest",
+                -65.0
+            ),
+            "R": self.params.get(
+                "R",
+                1.0
+            ),
+            "I": self.params.get(
+                "I",
+                10.0
+            ),
+            "tau": self.params.get(
+                "tau",
+                10.0
+            ),
         })
 
-        # 🔥 THIS IS WHERE MATH SYSTEM CONNECTS
-        expr = self.build_expression()
+        value = Evaluator().evaluate(
+            self.expression,
+            context
+        )
 
-        value = Evaluator().evaluate(expr, context)
-
-        return {"V": value}
+        return {
+            "V": value
+        }
 
     def build_expression(self):
         """
+        Build LIF differential equation.
+
         dV/dt = (-(V - V_rest) + R * I) / tau
         """
 
@@ -52,8 +99,20 @@ class LIFNeuron(BaseModel):
         tau = Variable("tau")
 
         numerator = AddExpression(
-            SubtractExpression(Constant(0), SubtractExpression(V, V_rest)),
-            MultiplyExpression(R, I)
+            SubtractExpression(
+                Constant(0),
+                SubtractExpression(
+                    V,
+                    V_rest
+                )
+            ),
+            MultiplyExpression(
+                R,
+                I
+            )
         )
 
-        return DivideExpression(numerator, tau)
+        return DivideExpression(
+            numerator,
+            tau
+        )

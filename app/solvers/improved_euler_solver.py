@@ -1,31 +1,42 @@
-# solvers/improved_euler_solver.py
+from typing import Dict, Any
 
-from solvers.ode_solver import ODESolver
+from app.solvers.ode_solver import ODESolver
 
 
 class ImprovedEulerSolver(ODESolver):
     """
-    Heun's method (predictor-corrector).
+    Second order Improved Euler solver.
     """
 
-    def step(self, model, t: float, dt: float) -> dict:
+    def step(
+        self,
+        model: Any,
+        t: float,
+        state: Dict[str, float],
+        dt: float
+    ) -> Dict[str, float]:
+        """
+        Perform Improved Euler integration step.
+        """
 
-        state = model.get_state()
+        k1 = model.derivatives(
+            t,
+            state
+        )
 
-        k1 = model.derivatives(t, state)
-
-        temp_state = {
-            k: state[k] + dt * k1[k]
-            for k in state.keys()
+        predicted_state = {
+            key: state[key] + dt * k1[key]
+            for key in state
         }
 
-        k2 = model.derivatives(t + dt, temp_state)
+        k2 = model.derivatives(
+            t + dt,
+            predicted_state
+        )
 
-        new_state = {
-            k: state[k] + (dt / 2) * (k1[k] + k2[k])
-            for k in state.keys()
+        return {
+            key: state[key]
+            + (dt / 2.0)
+            * (k1[key] + k2[key])
+            for key in state
         }
-
-        model.set_state(new_state)
-
-        return new_state

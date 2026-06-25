@@ -3,7 +3,9 @@ from typing import Dict, Any
 
 
 class ODESolver(ABC):
-    """Base ODE solver interface."""
+    """
+    Base interface for ODE solvers.
+    """
 
     @abstractmethod
     def step(
@@ -13,4 +15,7 @@ class ODESolver(ABC):
         state: Dict[str, float],
         dt: float
     ) -> Dict[str, float]:
+        """
+        Perform one integration step.
+        """
         pass

@@ -1,22 +1,28 @@
 from abc import ABC, abstractmethod
+from typing import Dict
 
 
 class SimulationComponent(ABC):
     """
-    Base interface for any component controlled by SimulationEngine.
+    Base interface for simulation components.
     """
 
     @abstractmethod
     def initialize(self):
-        """Initialize internal state."""
-        pass
-
-    @abstractmethod
-    def update(self, dt: float):
-        """Update component by timestep dt."""
+        """Initialize component state."""
         pass
 
     @abstractmethod
     def reset(self):
-        """Reset component to initial state."""
+        """Reset component state."""
+        pass
+
+    @abstractmethod
+    def set_state(self, state: Dict[str, float]):
+        """Set component state."""
+        pass
+
+    @abstractmethod
+    def get_state(self) -> Dict[str, float]:
+        """Return current component state."""
         pass
