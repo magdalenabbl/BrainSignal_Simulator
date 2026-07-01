@@ -1,9 +1,5 @@
-from typing import Dict, Optional
-
 from app.core.scheduler import Scheduler
 from app.core.logger import Logger
-from app.core.simulation_component import SimulationComponent
-from app.solvers.ode_solver import ODESolver
 
 
 class SimulationEngine:
@@ -19,8 +15,8 @@ class SimulationEngine:
 
     def __init__(
         self,
-        model: Optional[SimulationComponent] = None,
-        solver: Optional[ODESolver] = None,
+        model=None,
+        solver=None,
         dt: float = 0.01
     ):
         self.model = model
@@ -29,29 +25,31 @@ class SimulationEngine:
         self.scheduler = Scheduler(dt)
         self.logger = Logger()
 
-        self.state: Optional[Dict[str, float]] = None
+        self.state = None
 
-    def attach_model(
-        self,
-        model: SimulationComponent
-    ) -> None:
         """
-        Attach simulation model.
+        Stores full simulation trajectory.
+        """
+        self.history = []
+
+        """
+        Stores simulation timestamps.
+        """
+        self.time_history = []
+
+    def attach_model(self, model) -> None:
+        """
+        Attach dynamical system model and initialize state.
         """
 
         self.model = model
         self.state = model.initialize()
 
-        self.model.set_state(self.state)
-
         self.logger.info(
             "Model attached and initialized."
         )
 
-    def attach_solver(
-        self,
-        solver: ODESolver
-    ) -> None:
+    def attach_solver(self, solver) -> None:
         """
         Attach numerical solver.
         """
@@ -62,19 +60,14 @@ class SimulationEngine:
             "Solver attached."
         )
 
-    def step(self) -> Dict[str, float]:
+    def step(self) -> dict:
         """
-        Perform one simulation step.
+        Perform a single simulation step.
         """
 
-        if self.model is None:
+        if self.model is None or self.solver is None:
             raise ValueError(
-                "Model is not attached."
-            )
-
-        if self.solver is None:
-            raise ValueError(
-                "Solver is not attached."
+                "Model or solver not attached."
             )
 
         t = self.scheduler.step()
@@ -87,20 +80,23 @@ class SimulationEngine:
             dt=dt
         )
 
-        self.model.set_state(self.state)
+        self.model.set_state(
+            self.state
+        )
 
-        self.logger.info(
-            f"Step completed at t={t}"
+        self.history.append(
+            self.state.copy()
+        )
+
+        self.time_history.append(
+            t
         )
 
         return self.state
 
-    def run(
-        self,
-        steps: int = 100
-    ) -> Dict[str, float]:
+    def run(self, steps: int = 100) -> dict:
         """
-        Run simulation.
+        Run simulation for given number of steps.
         """
 
         self.logger.info(
@@ -108,6 +104,17 @@ class SimulationEngine:
         )
 
         self.scheduler.start()
+
+        self.history = []
+        self.time_history = []
+
+        self.history.append(
+            self.state.copy()
+        )
+
+        self.time_history.append(
+            0.0
+        )
 
         for _ in range(steps):
             self.step()
@@ -118,18 +125,26 @@ class SimulationEngine:
             "Simulation finished."
         )
 
-        return self.state
+        return {
+            "time": self.time_history,
+            "states": self.history
+        }
 
     def reset(self) -> None:
         """
-        Reset simulation.
+        Reset simulation state and scheduler.
         """
 
         self.scheduler.reset()
 
-        if self.model:
-            self.model.reset()
-            self.state = self.model.get_state()
+        self.history = []
+        self.time_history = []
+
+        if self.model is not None:
+            self.state = self.model.initialize()
+            self.model.set_state(
+                self.state
+            )
 
         self.logger.info(
             "Simulation reset."

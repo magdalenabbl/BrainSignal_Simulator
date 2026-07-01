@@ -1,7 +1,11 @@
 from fastapi import APIRouter, HTTPException
 
+from app.schemas.simulation import (
+    SimulationRequest,
+    SimulationResponse
+)
+
 from app.services.simulation_service import SimulationService
-from app.schemas.simulation import SimulationRequest
 
 
 router = APIRouter()
@@ -9,8 +13,13 @@ router = APIRouter()
 simulation_service = SimulationService()
 
 
-@router.post("/run")
-def run_simulation(request: SimulationRequest):
+@router.post(
+    "/run",
+    response_model=SimulationResponse
+)
+def run_simulation(
+    request: SimulationRequest
+):
     """
     Run numerical simulation.
     """
@@ -19,13 +28,16 @@ def run_simulation(request: SimulationRequest):
         result = simulation_service.run_simulation(
             model_name=request.model,
             solver_name=request.solver,
-            steps=request.steps,
+            T=request.T,
+            dt=request.dt,
             params=request.params
         )
 
         return {
-            "status": "success",
-            "state": result
+            "model": request.model,
+            "solver": request.solver,
+            "time": result["time"],
+            "states": result["states"]
         }
 
     except ValueError as error:
