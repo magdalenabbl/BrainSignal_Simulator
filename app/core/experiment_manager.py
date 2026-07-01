@@ -1,23 +1,46 @@
-class ExperimentManager:
-    """
-    Stores, runs, and compares simulation experiments.
-    """
+from app.core.configurable import Configurable
+from app.core.serializable import Serializable
+from app.core.simulation_engine import SimulationEngine
+from app.models.base_model import BaseModel
+from app.solvers.ode_solver import ODESolver
 
-    def __init__(self):
-        self.experiments = {}
 
-    def create_experiment(self, name: str, config: dict):
-        self.experiments[name] = {
-            "config": config,
-            "results": None
-        }
+class ExperimentManager(Configurable, Serializable):
+    """Manages simulation experiments."""
 
-    def save_results(self, name: str, results):
-        if name in self.experiments:
-            self.experiments[name]["results"] = results
+    def __init__(self, engine: SimulationEngine):
+        """Initialize experiment manager."""
 
-    def get_experiment(self, name: str):
-        return self.experiments.get(name)
+        self.engine = engine
 
-    def list_experiments(self):
-        return list(self.experiments.keys())
+    def configure(
+        self,
+        model: BaseModel,
+        solver: ODESolver,
+        dt: float = 0.01
+    ) -> None:
+        """Configure experiment components."""
+
+        self.engine.scheduler.dt = dt
+        self.engine.attach_model(model)
+        self.engine.attach_solver(solver)
+
+    def run(self, steps: int = 100) -> dict:
+        """Run experiment."""
+
+        return self.engine.run(steps)
+
+    def step(self) -> dict:
+        """Execute one simulation step."""
+
+        return self.engine.step()
+
+    def reset(self) -> None:
+        """Reset experiment."""
+
+        self.engine.reset()
+
+    def get_state(self) -> dict:
+        """Return current simulation state."""
+
+        return self.engine.state
