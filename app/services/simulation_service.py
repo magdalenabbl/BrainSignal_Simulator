@@ -1,46 +1,88 @@
+from typing import Dict, Any
+
+from app.core.simulation_engine import SimulationEngine
+
 from app.models.lif_neuron import LIFNeuron
+from app.models.izhikevich import IzhikevichNeuron
 from app.models.lorenz_system import LorenzSystem
 
 from app.solvers.euler_solver import EulerSolver
 from app.solvers.rk4_solver import RK4Solver
-from app.solvers.adaptive_rk_solver import AdaptiveRK
-
-from app.core.simulation_engine import SimulationEngine
 
 
 class SimulationService:
     """
-    Connects API layer with simulation engine.
+    Service layer for creating and running simulations.
     """
 
-    def create_model(self, model_name: str, params: dict):
+    MODEL_REGISTRY = {
+        "lif": LIFNeuron,
+        "izhikevich": IzhikevichNeuron,
+        "lorenz": LorenzSystem,
+    }
 
-        if model_name == "lif":
-            return LIFNeuron(**params)
+    SOLVER_REGISTRY = {
+        "euler": EulerSolver,
+        "rk4": RK4Solver,
+    }
 
-        if model_name == "lorenz":
-            return LorenzSystem(**params)
+    def create_model(
+        self,
+        model_name: str,
+        params: Dict[str, Any] | None = None
+    ):
+        """
+        Create model instance by name.
+        """
 
-        raise ValueError("Unknown model")
+        model_class = self.MODEL_REGISTRY.get(model_name)
+
+        if model_class is None:
+            raise ValueError(
+                f"Unknown model: {model_name}"
+            )
+
+        return model_class(params)
+
 
     def create_solver(self, solver_name: str):
+        """
+        Create solver instance by name.
+        """
 
-        if solver_name == "euler":
-            return EulerSolver()
+        solver_class = self.SOLVER_REGISTRY.get(solver_name)
 
-        if solver_name == "rk4":
-            return RK4Solver()
+        if solver_class is None:
+            raise ValueError(
+                f"Unknown solver: {solver_name}"
+            )
 
-        if solver_name == "adaptive_rk":
-            return AdaptiveRK()
+        return solver_class()
 
-        raise ValueError("Unknown solver")
 
-    def run(self, request):
+    def run_simulation(
+        self,
+        model_name: str,
+        solver_name: str,
+        steps: int = 100,
+        params: Dict[str, Any] | None = None
+    ):
+        """
+        Configure and execute simulation.
+        """
 
-        model = self.create_model(request.model, request.params)
-        solver = self.create_solver(request.solver)
+        model = self.create_model(
+            model_name,
+            params
+        )
 
-        engine = SimulationEngine(model, solver)
+        solver = self.create_solver(
+            solver_name
+        )
 
-        return engine.run(request.T, request.dt)
+        engine = SimulationEngine()
+
+        engine.attach_model(model)
+        engine.attach_solver(solver)
+
+        return engine.run(steps)
