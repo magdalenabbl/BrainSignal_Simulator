@@ -44,8 +44,10 @@ class SimulationService:
 
         return model_class(params)
 
-
-    def create_solver(self, solver_name: str):
+    def create_solver(
+        self,
+        solver_name: str
+    ):
         """
         Create solver instance by name.
         """
@@ -59,12 +61,12 @@ class SimulationService:
 
         return solver_class()
 
-
     def run_simulation(
         self,
         model_name: str,
         solver_name: str,
-        steps: int = 100,
+        T: float,
+        dt: float,
         params: Dict[str, Any] | None = None
     ):
         """
@@ -80,7 +82,11 @@ class SimulationService:
             solver_name
         )
 
-        engine = SimulationEngine()
+        steps = int(T / dt)
+
+        engine = SimulationEngine(
+            dt=dt
+        )
 
         engine.attach_model(model)
         engine.attach_solver(solver)
