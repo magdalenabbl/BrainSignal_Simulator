@@ -1,23 +1,13 @@
-from typing import List
+from app.data.dataset import Dataset
 
 
-class SpikeTrain:
-    """
-    Represents neuron spike events.
-    """
+class SpikeTrain(Dataset):
 
-    def __init__(
-        self,
-        spikes: List[float]
-    ):
-        self.spikes = spikes
+    def add_spike(self, time: float):
+        self.values.append(time)
 
-    def add_spike(
-        self,
-        time: float
-    ):
-        """
-        Add spike timestamp.
-        """
+    def get_spikes(self) -> list[float]:
+        return self.values
 
-        self.spikes.append(time)
+    def spike_count(self) -> int:
+        return self.size()

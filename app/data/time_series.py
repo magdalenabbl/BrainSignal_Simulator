@@ -1,22 +1,17 @@
 from typing import Dict, List
 
+from app.data.dataset import Dataset
 
-class TimeSeries:
-    """
-    Represents values evolving over time.
-    """
 
-    def __init__(
-        self,
-        time: List[float],
-        values: List[Dict[str, float]]
-    ):
-        self.time = time
-        self.values = values
+class TimeSeries(Dataset):
 
-    def length(self) -> int:
-        """
-        Returns number of samples.
-        """
+    def __init__(self, time_points: List[float], states: List[Dict[str, float]]):
+        super().__init__(states)
 
-        return len(self.time)
+        self.time_points = time_points
+
+    def get_time(self) -> List[float]:
+        return self.time_points
+
+    def get_states(self) -> List[Dict[str, float]]:
+        return self.values
