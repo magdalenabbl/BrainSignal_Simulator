@@ -1,24 +1,11 @@
-from app.core.scheduler import Scheduler
 from app.core.logger import Logger
+from app.core.scheduler import Scheduler
+from app.data.simulation_result import SimulationResult
 
 
 class SimulationEngine:
-    """
-    Core simulation runtime engine.
 
-    Responsible for:
-    - time management
-    - solver orchestration
-    - model execution
-    - state tracking
-    """
-
-    def __init__(
-        self,
-        model=None,
-        solver=None,
-        dt: float = 0.01
-    ):
+    def __init__(self, model=None, solver=None, dt: float = 0.01):
         self.model = model
         self.solver = solver
 
@@ -26,22 +13,10 @@ class SimulationEngine:
         self.logger = Logger()
 
         self.state = None
-
-        """
-        Stores full simulation trajectory.
-        """
         self.history = []
-
-        """
-        Stores simulation timestamps.
-        """
         self.time_history = []
 
     def attach_model(self, model) -> None:
-        """
-        Attach dynamical system model and initialize state.
-        """
-
         self.model = model
         self.state = model.initialize()
 
@@ -50,10 +25,6 @@ class SimulationEngine:
         )
 
     def attach_solver(self, solver) -> None:
-        """
-        Attach numerical solver.
-        """
-
         self.solver = solver
 
         self.logger.info(
@@ -61,44 +32,34 @@ class SimulationEngine:
         )
 
     def step(self) -> dict:
-        """
-        Perform a single simulation step.
-        """
-
         if self.model is None or self.solver is None:
             raise ValueError(
                 "Model or solver not attached."
             )
 
-        t = self.scheduler.step()
-        dt = self.scheduler.dt
+        current_time = self.scheduler.step()
+        time_step = self.scheduler.dt
 
         self.state = self.solver.step(
             model=self.model,
-            t=t,
+            t=current_time,
             state=self.state,
-            dt=dt
+            dt=time_step
         )
 
-        self.model.set_state(
-            self.state
-        )
+        self.model.set_state(self.state)
 
         self.history.append(
             self.state.copy()
         )
 
         self.time_history.append(
-            t
+            current_time
         )
 
         return self.state
 
-    def run(self, steps: int = 100) -> dict:
-        """
-        Run simulation for given number of steps.
-        """
-
+    def run(self, steps: int = 100) -> SimulationResult:
         self.logger.info(
             "Simulation started."
         )
@@ -125,16 +86,14 @@ class SimulationEngine:
             "Simulation finished."
         )
 
-        return {
-            "time": self.time_history,
-            "states": self.history
-        }
+        return SimulationResult(
+            time_points=self.time_history,
+            states=self.history,
+            model_name=self.model.__class__.__name__,
+            solver_name=self.solver.__class__.__name__
+        )
 
     def reset(self) -> None:
-        """
-        Reset simulation state and scheduler.
-        """
-
         self.scheduler.reset()
 
         self.history = []
@@ -142,9 +101,7 @@ class SimulationEngine:
 
         if self.model is not None:
             self.state = self.model.initialize()
-            self.model.set_state(
-                self.state
-            )
+            self.model.set_state(self.state)
 
         self.logger.info(
             "Simulation reset."

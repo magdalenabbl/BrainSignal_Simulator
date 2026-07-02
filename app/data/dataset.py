@@ -1,32 +1,16 @@
-from app.data.time_series import TimeSeries
-from app.data.spike_train import SpikeTrain
+from typing import Any
 
 
 class Dataset:
-    """
-    Base dataset container.
-    """
 
-    def __init__(self):
-        self.time_series = None
-        self.spike_train = None
+    def __init__(self, values: list[Any]):
+        self.values = values
 
-    def add_time_series(
-        self,
-        series: TimeSeries
-    ):
-        """
-        Attach time series data.
-        """
+    def get(self, index: int) -> Any:
+        return self.values[index]
 
-        self.time_series = series
+    def size(self) -> int:
+        return len(self.values)
 
-    def add_spike_train(
-        self,
-        spikes: SpikeTrain
-    ):
-        """
-        Attach spike data.
-        """
-
-        self.spike_train = spikes
+    def is_empty(self) -> bool:
+        return len(self.values) == 0
