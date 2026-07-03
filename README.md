@@ -242,52 +242,36 @@ Response:
   ]
 }
 ```
-10. Data Layer
-SimulationResult
+## 10. Data Layer
+### SimulationResult
 
 Stores:
 
-time_points
-states
-model metadata
-solver metadata
+- time_points
+- states
+- model metadata
+- solver metadata
 
-Supports conversion to:
+## 11. Math Engine
 
-JSON
-TimeSeries format
-file storage
-Storage System
+### Custom symbolic system includes:
 
-SimulationStorage:
-
-save(result → JSON)
-load(JSON → SimulationResult)
-
-Used for:
-
-experiment reproducibility
-dataset generation
-11. Math Engine
-
-Custom symbolic system includes:
-
-Variable
-Constant
-Binary expressions
-Evaluator
-Context
+- Variable
+- Constant
+- Binary expressions
+- Evaluator
+- Context
 
 Used in:
 
 LIF neuron equation evaluation
 future symbolic models
-12. Neural Layer
-ANN
-feedforward structure
-random weight initialization
-vector input processing
-SNN (planned extension)
-spike-based computation
-event-driven updates
-raster visualization support
+## 12. Neural Layer
+### ANN
+- feedforward structure
+- random weight initialization
+- vector input processing
+### SNN (planned extension)
+- spike-based computation
+- event-driven updates
+- raster visualization support
