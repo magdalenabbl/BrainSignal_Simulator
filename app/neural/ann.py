@@ -1,19 +1,32 @@
 import random
+from typing import Dict, Any, List
+from app.models.base_model import BaseModel
 
 
-class ANN:
+class ANN(BaseModel):
 
-    def __init__(self, input_size, output_size):
-        self.input_size = input_size
-        self.output_size = output_size
+    def initialize(self):
+        self.input_size = self.params.get("input_size", 3)
 
         self.weights = [
-            [random.random() for _ in range(input_size)]
-            for _ in range(output_size)
+            random.random() for _ in range(self.input_size)
         ]
 
-    def forward(self, x):
+        self.state = {"x": 1.0}
+        return self.state
+
+    def forward(self, x: List[float]):
         return [
-            sum(w * xi for w, xi in zip(neuron, x))
-            for neuron in self.weights
+            sum(w * xi for w, xi in zip(self.weights, x))
         ]
+
+    def step(self, x: List[float]):
+        output = self.forward(x)
+
+        prev = self.state.get("x", 1.0)
+
+        new_x = 0.7 * prev + 0.3 * output[0]
+
+        self.state = {"x": new_x}
+
+        return self.state
