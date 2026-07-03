@@ -1,40 +1,92 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>BrainSignal Simulator</title>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
 
-<h1>BrainSignal Simulator</h1>
+<div class="bg"></div>
 
-<div class="panel">
+<div class="app">
 
-    <select id="model">
-        <option value="lorenz">Lorenz</option>
-        <option value="lif">LIF</option>
-        <option value="izhikevich">Izhikevich</option>
-    </select>
+    
+    <header class="header">
+        <h1>BrainSignal Simulator</h1>
+        <p>Chaotic Dynamics • ANN • Spiking Neural Networks</p>
 
-    <select id="solver">
-        <option value="rk4">RK4</option>
-        <option value="euler">Euler</option>
-    </select>
+        <div id="status" class="status">● Ready</div>
+    </header>
 
-    <input id="T" type="number" value="5">
-    <input id="dt" type="number" value="0.01">
+    <!-- MAIN GRID -->
+    <div class="grid">
 
-    <button onclick="runSimulation()">Run</button>
+        <!-- LEFT: CONTROLS -->
+        <section class="card controls">
+
+            <h2>Simulation Controls</h2>
+
+            <label>Model</label>
+            <select id="model">
+                <option value="lorenz">Lorenz</option>
+                <option value="lif">LIF</option>
+                <option value="izhikevich">Izhikevich</option>
+                <option value="ann">ANN</option>
+            </select>
+
+            <label>Solver</label>
+            <select id="solver">
+                <option value="rk4">RK4</option>
+                <option value="euler">Euler</option>
+            </select>
+
+            <label>T</label>
+            <input id="T" type="number" value="5">
+
+            <label>dt</label>
+            <input id="dt" type="number" value="0.01">
+
+            <button onclick="runSimulation()">▶ Run Simulation</button>
+
+        </section>
+
+        <!-- RIGHT: MAIN CHART -->
+        <section class="card">
+
+            <h2>Simulation Result</h2>
+
+            <canvas id="chart"></canvas>
+
+        </section>
+
+        <!-- SPIKE RASTER -->
+        <section class="card full">
+
+            <h2>Spike Activity</h2>
+
+            <div id="spikes"></div>
+
+        </section>
+
+        <!-- STATS -->
+        <section class="card full stats">
+
+            <h2>Simulation Information</h2>
+
+            <div id="stats">
+                Waiting for simulation...
+            </div>
+
+        </section>
+
+    </div>
 
 </div>
 
-<canvas id="chart"></canvas>
-
-<h2>Spikes</h2>
-<div id="spikes"></div>
-<!--js file by FastAPI-->
 <script src="/static/app.js"></script>
 
 </body>

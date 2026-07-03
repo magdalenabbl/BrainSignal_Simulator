@@ -1,4 +1,5 @@
 from typing import Dict, List
+
 from app.data.time_series import TimeSeries
 
 
