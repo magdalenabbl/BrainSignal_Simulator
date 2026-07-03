@@ -1,0 +1,67 @@
+body {
+    font-family: Arial;
+    margin: 20px;
+    background: #f7f7f7;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.panel {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+input, select, button {
+    padding: 5px;
+    font-size: 14px;
+}
+
+button {
+    cursor: pointer;
+    background: #2d6cdf;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+}
+
+button:hover {
+    background: #1b4fb3;
+}
+
+canvas {
+    max-width: 900px;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+}
+#spike-container {
+    margin-top: 20px;
+    padding: 10px;
+    background: white;
+    border-radius: 8px;
+    max-width: 900px;
+}
+
+.spike-row {
+    font-family: monospace;
+    margin: 4px 0;
+}
+
+.spike-on {
+    color: red;
+    font-weight: bold;
+}
+
+.spike-off {
+    color: #bbb;
+}
+#spikes {
+    margin-top: 20px;
+    padding: 10px;
+    background: white;
+}
