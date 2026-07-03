@@ -230,9 +230,9 @@ Request:
   "dt": 0.01,
   "params": {}
 }
-
+```
 Response:
-
+```json
 {
   "model": "LorenzSystem",
   "solver": "RK4Solver",
@@ -241,6 +241,7 @@ Response:
     {"x": 1.0, "y": 2.0, "z": 3.0}
   ]
 }
+```
 10. Data Layer
 SimulationResult
 
