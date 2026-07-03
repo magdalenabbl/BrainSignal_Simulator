@@ -16,21 +16,9 @@ The architecture is designed to be extensible for research in computational neur
 
 ---
 
-## 2. Full Project Architecture
-
-The system is structured into layered components:
 
 
-API Layer → Service Layer → Core Engine → Models → Solvers → Math Engine → Data Layer → Storage
-↓
-Neural Layer (ANN/SNN)
-
-
-Frontend communicates with backend via REST API and renders results using Chart.js.
-
----
-
-## 3. Directory Structure
+## 2. Directory Structure
 
 - `app/main.py` – FastAPI entry point
 - `api/` – REST endpoints
@@ -47,9 +35,9 @@ Frontend communicates with backend via REST API and renders results using Chart.
 
 ---
 
-## 4. Mathematical Models
+## 3. Mathematical Models
 
-### 4.1 Lorenz System
+### 3.1 Lorenz System
 
 dx/dt = σ (y - x)  
 dy/dt = x (ρ - z) - y  
@@ -67,7 +55,7 @@ Behavior:
 
 ---
 
-### 4.2 LIF Neuron
+### 3.2 LIF Neuron
 
 dV/dt = (-(V - V_rest) + R * I) / τ  
 
@@ -90,7 +78,7 @@ State:
 
 ---
 
-### 4.3 Izhikevich Neuron
+### 3.3 Izhikevich Neuron
 
 dV/dt = 0.04V² + 5V + 140 - u + I  
 du/dt = a(bV - u)
@@ -107,7 +95,7 @@ Behavior types:
 
 ---
 
-### 4.4 Artificial Neural Network (ANN)
+### 3.4 Artificial Neural Network (ANN)
 
 Discrete update rule:
 
@@ -126,9 +114,9 @@ ANN bypasses ODE solvers and uses direct forward computation.
 
 ---
 
-## 5. Numerical Solvers
+## 4. Numerical Solvers
 
-### 5.1 Euler Solver
+### 4.1 Euler Solver
 
 x_{n+1} = x_n + dt * f(x, t)
 
@@ -138,7 +126,7 @@ Used for:
 
 ---
 
-### 5.2 RK4 Solver
+### 4.2 RK4 Solver
 
 k1 = f(x, t)  
 k2 = f(x + dt/2 k1, t + dt/2)  
@@ -153,7 +141,7 @@ Used for:
 
 ---
 
-### 5.3 Adaptive RK Solver
+### 4.3 Adaptive RK Solver
 
 Adaptive step control:
 
@@ -168,7 +156,7 @@ Used for:
 
 ---
 
-### 5.4 Additional Solvers (implemented)
+### 4.4 Additional Solvers (implemented)
 
 - Leapfrog Solver (energy-preserving systems)
 - Verlet Solver (physics-based integration)
@@ -176,7 +164,7 @@ Used for:
 
 ---
 
-## 6. Core Simulation Engine
+## 5. Core Simulation Engine
 
 SimulationEngine is responsible for:
 
@@ -198,7 +186,7 @@ Execution flow:
 
 ---
 
-## 7. ANN Execution Mode
+## 6. ANN Execution Mode
 
 ANN bypass logic:
 
@@ -216,7 +204,7 @@ x(t+1) = ANN.forward(x)
 
 ---
 
-## 8. API Specification
+## 7. API Specification
 
 ### POST /simulation/run
 
@@ -242,7 +230,7 @@ Response:
   ]
 }
 ```
-## 10. Data Layer
+## 8. Data Layer
 ### SimulationResult
 
 Stores:
@@ -252,7 +240,7 @@ Stores:
 - model metadata
 - solver metadata
 
-## 11. Math Engine
+## 9. Math Engine
 
 ### Custom symbolic system includes:
 
@@ -266,7 +254,7 @@ Used in:
 
 LIF neuron equation evaluation
 future symbolic models
-## 12. Neural Layer
+## 10. Neural Layer
 ### ANN
 - feedforward structure
 - random weight initialization
