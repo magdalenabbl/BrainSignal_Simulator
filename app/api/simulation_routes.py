@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+
 from app.schemas.simulation import SimulationRequest, SimulationResponse
 from app.services.simulation_service import SimulationService
 
@@ -9,6 +10,7 @@ simulation_service = SimulationService()
 
 @router.post("/run", response_model=SimulationResponse)
 def run_simulation(request: SimulationRequest):
+
     try:
         result = simulation_service.run_simulation(
             model_name=request.model,
@@ -18,7 +20,12 @@ def run_simulation(request: SimulationRequest):
             params=request.params
         )
 
-        return result.to_dict()
+        return SimulationResponse(
+            model=result.model_name,
+            solver=result.solver_name,
+            time=result.time_points,
+            states=result.states
+        )
 
     except ValueError as error:
         raise HTTPException(

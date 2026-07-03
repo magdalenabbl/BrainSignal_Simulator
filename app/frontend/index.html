@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BrainSignal Simulator</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<h1>BrainSignal Simulator</h1>
+
+<div class="panel">
+
+    <select id="model">
+        <option value="lorenz">Lorenz</option>
+        <option value="lif">LIF</option>
+        <option value="izhikevich">Izhikevich</option>
+    </select>
+
+    <select id="solver">
+        <option value="rk4">RK4</option>
+        <option value="euler">Euler</option>
+    </select>
+
+    <input id="T" type="number" value="5">
+    <input id="dt" type="number" value="0.01">
+
+    <button onclick="runSimulation()">Run</button>
+
+</div>
+
+<canvas id="chart"></canvas>
+
+<h2>Spikes</h2>
+<div id="spikes"></div>
+<!--js file by FastAPI-->
+<script src="/static/app.js"></script>
+
+</body>
+</html>
