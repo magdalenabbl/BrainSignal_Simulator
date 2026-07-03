@@ -2,8 +2,8 @@ let chart = null;
 
 window.runSimulation = async function () {
 
-    const model = document.getElementById("model").value;
-    const solver = document.getElementById("solver").value;
+    const model = document.getElementById("model").value.toLowerCase();
+    const solver = document.getElementById("solver").value.toLowerCase();
     const T = Number(document.getElementById("T").value);
     const dt = Number(document.getElementById("dt").value);
 

@@ -6,19 +6,21 @@ from app.models.lif_neuron import LIFNeuron
 from app.models.lorenz_system import LorenzSystem
 from app.solvers.euler_solver import EulerSolver
 from app.solvers.rk4_solver import RK4Solver
-
-
+from app.neural.ann import ANN
+from app.solvers.adaptive_rk_solver import A_RK4Solver
 class SimulationService:
 
     MODEL_REGISTRY = {
         "lif": LIFNeuron,
         "izhikevich": IzhikevichNeuron,
-        "lorenz": LorenzSystem
+        "lorenz": LorenzSystem,
+        "ann": ANN
     }
 
     SOLVER_REGISTRY = {
         "euler": EulerSolver,
-        "rk4": RK4Solver
+        "rk4": RK4Solver,
+        "adaptive_rk": A_RK4Solver
     }
 
     def create_model(self, model_name: str, params: Dict[str, Any] | None = None):

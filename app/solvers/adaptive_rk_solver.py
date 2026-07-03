@@ -1,7 +1,7 @@
 from typing import Dict, Any
 
 
-class RK4Solver:
+class A_RK4Solver:
     """
     Classic 4th-order Runge-Kutta solver for ODE systems.
 
