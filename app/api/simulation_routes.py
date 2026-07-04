@@ -1,5 +1,4 @@
 from fastapi import APIRouter, HTTPException
-
 from app.schemas.simulation import SimulationRequest, SimulationResponse
 from app.services.simulation_service import SimulationService
 
@@ -8,8 +7,8 @@ router = APIRouter()
 simulation_service = SimulationService()
 
 
-@router.post("/run", response_model=SimulationResponse)
-def run_simulation(request: SimulationRequest):
+@router.post("/run", response_model=SimulationResponse) #post q. to /run returns in format SimulationResponse 
+def run_simulation(request: SimulationRequest): #fastapi expects json and transforms it into request obj
 
     try:
         result = simulation_service.run_simulation(

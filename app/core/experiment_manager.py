@@ -13,12 +13,7 @@ class ExperimentManager(Configurable, Serializable):
 
         self.engine = engine
 
-    def configure(
-        self,
-        model: BaseModel,
-        solver: ODESolver,
-        dt: float = 0.01
-    ) -> None:
+    def configure(self, model: BaseModel, solver: ODESolver, dt: float = 0.01) -> None:
         """Configure experiment components."""
 
         self.engine.scheduler.dt = dt

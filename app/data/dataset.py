@@ -18,7 +18,8 @@ class Dataset:
 
     def get_time(self, index: int) -> float:
         return self.time[index]
-
+# functions that transforms data to ml model entry data 
+    # uses the past states to predict the next (sliding window)
     def to_sequences(self, window_size: int):
         sequences = []
 
@@ -28,6 +29,6 @@ class Dataset:
             sequences.append((x, y))
 
         return sequences
-
+    #dict->vector
     def to_vectors(self):
         return [list(state.values()) for state in self.states]
