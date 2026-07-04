@@ -9,9 +9,7 @@ class Scheduler:
         self.running = False
 
     def step(self) -> float:
-        """
-        Advance simulation time.
-        """
+    
         self.time += self.dt
         return self.time
 

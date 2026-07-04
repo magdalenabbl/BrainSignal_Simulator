@@ -1,10 +1,12 @@
 from typing import Dict, Tuple, Any
-
 from app.models.base_model import BaseModel
-
 from app.math.context import Context
 from app.math.evaluator import Evaluator
-
+from app.math.variable import Variable
+from app.math.binary_expression import (
+            SubtractExpression,
+            MultiplyExpression
+        )
 
 class LorenzSystem(BaseModel):
     """
@@ -85,11 +87,7 @@ class LorenzSystem(BaseModel):
         Build symbolic Lorenz equations.
         """
 
-        from app.math.variable import Variable
-        from app.math.binary_expression import (
-            SubtractExpression,
-            MultiplyExpression
-        )
+        
 
         x = Variable("x")
         y = Variable("y")

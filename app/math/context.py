@@ -10,7 +10,7 @@ class Context:
         self.variables = variables or {}
 
     def get(self, name: str):
-        return self.variables.get(name, 0.0)
+        return self.variables.get(name, 0.0) # searches the var through its name, otherways 0.0
 
     def set(self, name: str, value: float):
         self.variables[name] = value

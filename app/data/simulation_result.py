@@ -1,7 +1,7 @@
 from typing import List, Dict
 from app.data.time_series import TimeSeries
 
-
+# contains everything the simulation got
 class SimulationResult:
 
     def __init__(self, time_points: List[float], states: List[Dict[str, float]], model_name: str, solver_name: str):

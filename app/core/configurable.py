@@ -10,4 +10,4 @@ class Configurable(ABC):
         self.config = config
 
     def save_config(self) -> dict:
-        return getattr(self, "config", {})
+        return getattr(self, "config", {}) # if there is self.config->returns it; if there is not-> returns {}
