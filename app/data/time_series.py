@@ -1,17 +1,17 @@
-from typing import Dict, List
-
-from app.data.dataset import Dataset
+from typing import List, Dict
 
 
-class TimeSeries(Dataset):
+class TimeSeries:
 
     def __init__(self, time_points: List[float], states: List[Dict[str, float]]):
-        super().__init__(states)
-
         self.time_points = time_points
+        self.states = states
 
-    def get_time(self) -> List[float]:
+    def get_time_points(self) -> List[float]:
         return self.time_points
 
     def get_states(self) -> List[Dict[str, float]]:
-        return self.values
+        return self.states
+
+    def size(self) -> int:
+        return len(self.states)

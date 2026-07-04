@@ -1,13 +1,16 @@
-from app.data.dataset import Dataset
+from typing import List, Dict
 
 
-class SpikeTrain(Dataset):
+class SpikeTrain:
+
+    def __init__(self):
+        self.spikes: List[float] = []
 
     def add_spike(self, time: float):
-        self.values.append(time)
+        self.spikes.append(time)
 
-    def get_spikes(self) -> list[float]:
-        return self.values
+    def get_spikes(self) -> List[float]:
+        return self.spikes
 
     def spike_count(self) -> int:
-        return self.size()
+        return len(self.spikes)

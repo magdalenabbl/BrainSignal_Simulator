@@ -1,4 +1,4 @@
-from app.models.lif_neuron import LIFNeuron
+from app.models.lif_neuron_fast import LIFNeuronFast
 
 
 class SNN:
@@ -6,7 +6,7 @@ class SNN:
     def __init__(self, neuron_count=3):
 
         self.neurons = [
-            LIFNeuron({
+            LIFNeuronFast({
                 "V_rest": -65.0,
                 "R": 1.0,
                 "I": 10.0,
@@ -23,11 +23,14 @@ class SNN:
 
             I = inputs[i % len(inputs)]
 
-            # ensure state exists
-            if neuron.state is None:
+            # FIX: safe initialization
+            if not neuron.state or "V" not in neuron.state:
                 neuron.initialize()
 
-            V = neuron.state["V"]
+            V = neuron.state.get("V", -65.0)
+
+            # inject current
+            neuron.params["I"] = I
 
             dV = neuron.derivatives(t, {"V": V})["V"]
 
@@ -37,7 +40,7 @@ class SNN:
 
             if V_new >= -50.0:
                 spikes.append(1)
-                neuron.state["V"] = -65.0
+                neuron.state["V"] = neuron.params.get("V_rest", -65.0)
             else:
                 spikes.append(0)
 
