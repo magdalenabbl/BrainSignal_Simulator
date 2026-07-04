@@ -1,21 +1,45 @@
 from abc import ABC, abstractmethod
-from typing import Dict
+from typing import Dict, Any
+
+from app.core.simulation_component import SimulationComponent
 
 
-class SimulationComponent(ABC):
+class BaseModel(SimulationComponent, ABC):
+    """
+    Base class for all dynamical systems.
+    Uses dictionary state representation.
+    """
+
+    def __init__(self, params: Dict[str, Any] = None):
+        self.params = params or {}
+        self.state = {}
 
     @abstractmethod
-    def initialize(self):
-        raise NotImplementedError
+    def initialize(self) -> Dict[str, float]:
+        """
+        Returns initial system state.
+        """
+        pass
 
     @abstractmethod
+    def derivatives(
+        self,
+        t: float,
+        state: Dict[str, float]
+    ) -> Dict[str, float]:
+        """
+        Computes derivatives for solver.
+        """
+        pass
+
     def reset(self):
-        raise NotImplementedError
+        """Reset model state."""
+        self.state = self.initialize()
 
-    @abstractmethod
     def set_state(self, state: Dict[str, float]):
-        raise NotImplementedError
+        """Update current state."""
+        self.state = state
 
-    @abstractmethod
     def get_state(self) -> Dict[str, float]:
-        raise NotImplementedError
+        """Return current state."""
+        return self.state
