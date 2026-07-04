@@ -5,6 +5,10 @@ __pycache__/
 
 .env
 .venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
 
 .idea/
 .vscode/
