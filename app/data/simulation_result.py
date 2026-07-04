@@ -1,5 +1,4 @@
-from typing import Dict, List
-
+from typing import List, Dict
 from app.data.time_series import TimeSeries
 
 
@@ -15,8 +14,7 @@ class SimulationResult:
         return self.states[-1]
 
     def to_dataset(self) -> TimeSeries:
-        return TimeSeries(time_points=self.time_points, states=self.states
-        )
+        return TimeSeries(self.time_points, self.states)
 
     def to_dict(self) -> dict:
         return {

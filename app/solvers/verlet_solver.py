@@ -1,24 +1,15 @@
-# solvers/verlet_solver.py
+from app.solvers.ode_solver import ODESolver
 
-from solvers.ode_solver import ODESolver
 
 class VerletSolver(ODESolver):
-    """
-    Used for physics systems (stable energy conservation).
-    """
 
-    def step(self, model, t: float, dt: float) -> dict:
+    def step(self, model, t: float, state: dict, dt: float) -> dict:
 
-        state = model.get_state()
+        derivatives = model.derivatives(t, state)
 
-        new_state = {}
-
-        for k in state.keys():
-            x = state[k]
-            dx = model.derivatives(t, state)[k]
-
-            new_state[k] = x + dx * dt + 0.5 * dx * dt * dt
-
-        model.set_state(new_state)
+        new_state = {
+            k: state[k] + dt * derivatives[k] + 0.5 * dt * dt * derivatives[k]
+            for k in state
+        }
 
         return new_state

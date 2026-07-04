@@ -25,25 +25,9 @@ class Dataset:
         for i in range(len(self.states) - window_size):
             x = self.states[i:i + window_size]
             y = self.states[i + window_size]
-
             sequences.append((x, y))
 
         return sequences
 
-    def to_spike_train(self, threshold: float = 0.5):
-        spikes = []
-
-        for state in self.states:
-            spike_vector = {
-                k: 1 if v > threshold else 0
-                for k, v in state.items()
-            }
-            spikes.append(spike_vector)
-
-        return spikes
-
     def to_vectors(self):
-        return [
-            list(state.values())
-            for state in self.states
-        ]
+        return [list(state.values()) for state in self.states]

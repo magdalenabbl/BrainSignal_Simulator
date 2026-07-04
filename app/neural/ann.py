@@ -1,5 +1,5 @@
 import random
-from typing import Dict, Any, List
+from typing import List, Dict, Any
 from app.models.base_model import BaseModel
 
 
@@ -30,3 +30,6 @@ class ANN(BaseModel):
         self.state = {"x": new_x}
 
         return self.state
+
+    def derivatives(self, t, state):
+        return {k: 0.0 for k in state} if isinstance(state, dict) else {}
