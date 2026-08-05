@@ -81,7 +81,7 @@ def test_time_series():
     assert ts.get_states() == states
 
 def test_spike_train():
-    ds = SpikeTrain([0], [{"x": 1}])
+    ds = SpikeTrain()
 
     # even if implementation is partial, just check it exists
     assert ds.size() == 1

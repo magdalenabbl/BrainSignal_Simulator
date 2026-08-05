@@ -6,6 +6,7 @@ class TimeSeries:
     def __init__(self, time_points: List[float], states: List[Dict[str, float]]):
         self.time_points = time_points
         self.states = states
+        self.size
 
     def get_time_points(self) -> List[float]:
         return self.time_points
