@@ -15,8 +15,10 @@ class ANN(BaseModel):
             0.1
         )
 
-        # 2 input neurons -> 2 hidden neurons
-
+        # 2 input neurons -> 2 hidden neurons and 4 weights
+        # input1-w1->hidden1 
+        # input2-w2->hidden1
+        # ...   ->hidden2
         self.input_hidden_weights = [
             [
                 random.uniform(-1, 1),
@@ -67,7 +69,7 @@ class ANN(BaseModel):
         hidden_outputs = []
 
         for neuron in range(2):
-
+            # w1*x1+w2*x2+bias
             total = (
                 inputs[0] *
                 self.input_hidden_weights[neuron][0]
@@ -94,76 +96,40 @@ class ANN(BaseModel):
         )
 
 
-        return self.sigmoid(output_total)
+        return hidden_outputs, self.sigmoid(output_total)
 
 
     def predict(self, inputs: List[float]) -> int:
 
-        output = self.forward(inputs)
+        _, output = self.forward(inputs)
 
         return 1 if output >= 0.5 else 0
 
-
+    # data = input, target = [0,1],1
     def train(self, data, epochs: int = 1000):
 
         for _ in range(epochs):
 
             for inputs, target in data:
 
-                # ---------- forward ----------
+                # Forward part
+                hidden_outputs, output = self.forward(inputs)
 
-                hidden_outputs = []
-
-                for neuron in range(2):
-
-                    total = (
-                        inputs[0] *
-                        self.input_hidden_weights[neuron][0]
-                        +
-                        inputs[1] *
-                        self.input_hidden_weights[neuron][1]
-                        +
-                        self.hidden_bias[neuron]
-                    )
-
-                    hidden_outputs.append(
-                        self.sigmoid(total)
-                    )
-
-
-                output_total = (
-                    hidden_outputs[0] *
-                    self.hidden_output_weights[0]
-                    +
-                    hidden_outputs[1] *
-                    self.hidden_output_weights[1]
-                    +
-                    self.output_bias
-                )
-
-
-                output = self.sigmoid(output_total)
-
-
-                # ---------- error ----------
-
+                # error
                 error = target - output
 
-
-                # ---------- output gradient ----------
-
+                # output neuron change - output gradient
                 output_delta = (
                     error *
                     self.sigmoid_derivative(output)
                 )
 
 
-                # ---------- hidden gradient ----------
-
+                # hidden gradient
                 hidden_deltas = []
 
                 for i in range(2):
-
+                    # backpropagation output->hidden
                     hidden_error = (
                         output_delta
                         *
@@ -181,7 +147,7 @@ class ANN(BaseModel):
                     )
 
 
-                # ---------- update hidden-output weights ----------
+                # update hidden-output weights
 
                 for i in range(2):
 
@@ -201,8 +167,8 @@ class ANN(BaseModel):
                 )
 
 
-                # ---------- update input-hidden weights ----------
-
+                # update input-hidden weights 
+                 
                 for neuron in range(2):
 
                     self.input_hidden_weights[neuron][0] += (
@@ -233,15 +199,15 @@ class ANN(BaseModel):
     # Used by SimulationEngine
 
     def step(self, x: List[float]):
-
-        output = self.forward(x)
+        # new output
+        hidden, output = self.forward(x)
 
         previous = self.state.get(
             "x",
             1.0
         )
 
-
+        # 0.7 and 0.3 make a transition from previous and output 
         new_x = (
             0.7 * previous
             +

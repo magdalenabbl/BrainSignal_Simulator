@@ -25,9 +25,9 @@ class SimulationEngine:
 
         t = self.scheduler.step()
 
-        # =========================
-        # ANN MODE (SAFE)
-        # =========================
+       
+        # ANN MODE 
+        
         if isinstance(self.model, ANN):
 
             base = self.state.get("x", 1.0)
@@ -35,9 +35,9 @@ class SimulationEngine:
 
             self.state = self.model.step(x)
 
-        # =========================
+       
         # ODE MODE
-        # =========================
+        
         else:
 
             self.state = self.solver.step(
@@ -65,6 +65,7 @@ class SimulationEngine:
         for _ in range(steps):
             self.step()
 
+        # the simulation ends and SimulationEngine returns result to API
         return SimulationResult(
             time_points=self.time_history,
             states=self.history,
