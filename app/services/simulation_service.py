@@ -1,5 +1,4 @@
 from typing import Any, Dict
-
 from app.core.simulation_engine import SimulationEngine
 from app.models.izhikevich import IzhikevichNeuron
 from app.models.lif_neuron import LIFNeuron
@@ -8,6 +7,7 @@ from app.solvers.euler_solver import EulerSolver
 from app.solvers.rk4_solver import RK4Solver
 from app.neural.ann import ANN
 from app.solvers.adaptive_rk_solver import A_RK4Solver
+
 class SimulationService:
 
     MODEL_REGISTRY = {
