@@ -1,4 +1,6 @@
 from app.neural.ann import ANN
+import csv
+import io
 
 # API->ANNService -> ANN
 
@@ -7,31 +9,54 @@ class ANNService:
     def __init__(self):
         self.ann = ANN()
 
-    def train(self, data, epochs):
+    def train_from_csv(self, content: bytes):
+    
+        # Convert file bytes to text
+        text = content.decode("utf-8")
 
-        # Convert Pydantic objects (TrainingExample from schemas/ann) to ANN training format
-        training_data = [
-            (example.inputs, example.target)
-            for example in data
-        ]
+        # Read rows from the CSV file; dictionary 
+        reader = csv.DictReader( 
+            io.StringIO(text) # text to file
+        )
 
-        # Train the neural network using ANN
+        training_data = []
+
+        for row in reader:
+
+            # Read the two input values
+            inputs = [
+                float(row["input_1"]),
+                float(row["input_2"])
+            ]
+
+            # Read the expected output
+            target = int(row["target"])
+
+            # 
+            # dictionary -> tuple ([0.0, 1.0], 1) = [input_1,input_2],target
+            # Store data in the format expected by ANN.train()
+            training_data.append(
+                (inputs, target)
+            )
+
+        # Train the neural network
         self.ann.train(
             training_data,
-            epochs=epochs
+            epochs=5000
         )
 
         # Return training result to API
         return {
             "message": "Training completed"
         }
-    
-    # using the trained network with new input data
+
+    # Use the already trained network like [0,1]
     def infer(self, inputs):
 
+        # The same ann object
         prediction = self.ann.predict(inputs)
 
-        # Return prediction to the API
+        # Return prediction to API
         return {
             "prediction": prediction
         }
