@@ -1,5 +1,5 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
-from app.schemas.ann import TrainRequest, TrainResponse, InferRequest, InferResponse
+from app.schemas.ann import (TrainResponse, InferRequest, InferResponse)
 from app.services.ann_service import ANNService
 
 
@@ -7,23 +7,26 @@ from app.services.ann_service import ANNService
 router = APIRouter()
 ann_service = ANNService()
 
-# if HTTP POST request to this path - run train_ann()   POST /train -> train_ann()
-# "/train" is the enpoint path, response_model=TrainResponse tells FastAPI what format the response should have
 
+# if HTTP POST request to this path - run train_ann()   POST /train -> train_ann()
+# "/train" is the endpoint path, response_model=TrainResponse tells FastAPI what format the response should have
 @router.post("/train", response_model=TrainResponse)
 async def train_ann(file: UploadFile = File(...)):
 
     # The endpoint does not train the network, only passes the request data to the service
     # Check that the uploaded file is a CSV file
     if not file.filename.endswith(".csv"):
-        raise HTTPException(status_code=400, detail="Only CSV files are allowed")
+        raise HTTPException(
+            status_code=400,
+            detail="Only CSV files are allowed"
+        )
 
-    # Wait untill the uploaded file is read
+    # Wait until the uploaded file is read
     content = await file.read()
 
     # Send the CSV data to the service
     result = ann_service.train_from_csv(content)
-    
+
     # Return the result to FastAPI
     return result
 

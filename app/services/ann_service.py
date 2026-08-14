@@ -2,7 +2,8 @@ from app.neural.ann import ANN
 import csv
 import io
 
-# API->ANNService -> ANN
+
+# API -> ANNService -> ANN
 
 class ANNService:
 
@@ -10,13 +11,13 @@ class ANNService:
         self.ann = ANN()
 
     def train_from_csv(self, content: bytes):
-    
+
         # Convert file bytes to text
         text = content.decode("utf-8")
 
-        # Read rows from the CSV file; dictionary 
-        reader = csv.DictReader( 
-            io.StringIO(text) # text to file
+        # Read rows from the CSV file; dictionary
+        reader = csv.DictReader(
+            io.StringIO(text)  # text to file
         )
 
         training_data = []
@@ -32,8 +33,9 @@ class ANNService:
             # Read the expected output
             target = int(row["target"])
 
-            # 
-            # dictionary -> tuple ([0.0, 1.0], 1) = [input_1,input_2],target
+            # dictionary -> tuple ([0.0, 1.0], 1)
+            # [input_1, input_2], target
+
             # Store data in the format expected by ANN.train()
             training_data.append(
                 (inputs, target)
@@ -50,10 +52,10 @@ class ANNService:
             "message": "Training completed"
         }
 
-    # Use the already trained network like [0,1]
+    # Use the already trained network like [0, 1]
     def infer(self, inputs):
 
-        # The same ann object
+        # The same ANN object
         prediction = self.ann.predict(inputs)
 
         # Return prediction to API
