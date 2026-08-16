@@ -97,6 +97,56 @@ function initializeNavigation() {
 
     });
 
+
+    // Find all buttons that control screens
+    const screenButtons = document.querySelectorAll(
+        "[data-screen]"
+    );
+
+
+    // Add a click handler to every screen button
+    screenButtons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                // Get the target screen
+                const screen =
+                    this.getAttribute("data-screen");
+
+
+                // Open the Simulation page
+                if (screen === "simulation") {
+
+                    window.location.href =
+                        "/static/dynamics.html";
+
+                }
+
+
+                // Open the ANN page
+                if (screen === "ann") {
+
+                    window.location.href =
+                        "/static/ann.html";
+
+                }
+
+
+                // Open the SNN page
+                if (screen === "snn") {
+
+                    window.location.href =
+                        "/static/snn.html";
+
+                }
+
+            }
+        );
+
+    });
+
 }
 
 
