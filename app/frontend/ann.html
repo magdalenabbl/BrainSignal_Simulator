@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>BrainSignal Simulator - ANN</title>
+
+    <!-- Main application styles -->
+    <link
+        rel="stylesheet"
+        href="/static/style.css"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- Main application container -->
+    <div class="app-container">
+
+
+        <!-- Sidebar navigation -->
+        <aside class="sidebar">
+
+            <div class="logo">
+
+                <h2>BrainSignal</h2>
+
+                <span>Simulator</span>
+
+            </div>
+
+
+            <!-- Navigation -->
+            <nav>
+
+                <a href="/">
+                    Dashboard
+                </a>
+
+                <a href="/static/dynamics.html">
+                    Simulation
+                </a>
+
+                <a
+                    href="/static/ann.html"
+                    class="active"
+                >
+                    ANN
+                </a>
+
+                <a href="/static/snn.html">
+                    SNN
+                </a>
+
+            </nav>
+
+        </aside>
+
+
+
+        <!-- Main content -->
+        <main class="main-content">
+
+
+            <!-- Page header -->
+            <header class="page-header">
+
+                <div>
+
+                    <p class="page-label">
+                        Neural Network
+                    </p>
+
+                    <h1>
+                        Artificial Neural Network
+                    </h1>
+
+                    <p>
+                        Train and test the neural network
+                        using your dataset.
+                    </p>
+
+                </div>
+
+            </header>
+
+
+
+            <!-- ANN dashboard -->
+            <section class="dashboard-grid">
+
+
+                <!-- Training card -->
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="card-label">
+                                TRAINING
+                            </span>
+
+                            <h2>
+                                Train ANN
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <p class="description">
+
+                        Upload a CSV dataset containing
+                        the training examples.
+
+                    </p>
+
+
+                    <!-- CSV upload -->
+                    <div class="form-group">
+
+                        <label for="dataset">
+                            Training dataset
+                        </label>
+
+                        <input
+                            type="file"
+                            id="dataset"
+                            accept=".csv"
+                        >
+
+                    </div>
+
+
+                    <!-- Train button -->
+                    <button
+                        class="primary-button"
+                        onclick="trainANN()"
+                    >
+                        Train Network
+                    </button>
+
+
+                    <!-- Training status -->
+                    <div
+                        id="trainStatus"
+                        class="status"
+                    >
+                    </div>
+
+                </div>
+
+
+
+                <!-- Inference card -->
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="card-label">
+                                INFERENCE
+                            </span>
+
+                            <h2>
+                                Test ANN
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <p class="description">
+
+                        Enter new input values and use
+                        the already trained network.
+
+                    </p>
+
+
+                    <!-- First input -->
+                    <div class="form-group">
+
+                        <label for="input1">
+                            Input 1
+                        </label>
+
+                        <input
+                            type="number"
+                            id="input1"
+                            step="any"
+                            value="0"
+                        >
+
+                    </div>
+
+
+                    <!-- Second input -->
+                    <div class="form-group">
+
+                        <label for="input2">
+                            Input 2
+                        </label>
+
+                        <input
+                            type="number"
+                            id="input2"
+                            step="any"
+                            value="1"
+                        >
+
+                    </div>
+
+
+                    <!-- Infer button -->
+                    <button
+                        class="primary-button"
+                        onclick="inferANN()"
+                    >
+                        Run Inference
+                    </button>
+
+
+                    <!-- Prediction -->
+                    <div
+                        id="prediction"
+                        class="prediction-box"
+                    >
+
+                        <span>
+                            Prediction
+                        </span>
+
+                        <strong id="predictionValue">
+                            -
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Dataset information -->
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="card-label">
+                                DATASET
+                            </span>
+
+                            <h2>
+                                Expected CSV format
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <p class="description">
+
+                        The CSV file should contain
+                        two input columns and one target.
+
+                    </p>
+
+
+                    <pre class="code-example">input_1,input_2,target
+0,0,0
+0,1,1
+1,0,1
+1,1,1</pre>
+
+                </div>
+
+
+
+                <!-- ANN information -->
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="card-label">
+                                NETWORK
+                            </span>
+
+                            <h2>
+                                ANN Status
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-row">
+
+                        <span>
+                            Architecture
+                        </span>
+
+                        <strong>
+                            2 - 2 - 1
+                        </strong>
+
+                    </div>
+
+
+                    <div class="stat-row">
+
+                        <span>
+                            Activation
+                        </span>
+
+                        <strong>
+                            Sigmoid
+                        </strong>
+
+                    </div>
+
+
+                    <div class="stat-row">
+
+                        <span>
+                            Training
+                        </span>
+
+                        <strong id="networkStatus">
+                            Not trained
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </main>
+
+    </div>
+
+
+
+    <!-- ANN JavaScript -->
+    <script src="/static/js/ann.js"></script>
+
+
+    <!-- Common application JavaScript -->
+    <script src="/static/js/app.js"></script>
+
+
+</body>
+
+</html>

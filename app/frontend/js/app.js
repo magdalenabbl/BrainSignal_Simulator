@@ -1,93 +1,143 @@
-let chart = null;
+// Wait until the HTML page is fully loaded
+document.addEventListener("DOMContentLoaded", function () {
 
-window.runSimulation = async function () {
+    // Initialize the application
+    initializeApp();
 
-    const model = document.getElementById("model").value.toLowerCase();
-    const solver = document.getElementById("solver").value.toLowerCase();
-    const T = Number(document.getElementById("T").value);
-    const dt = Number(document.getElementById("dt").value);
-
-    const response = await fetch("/simulation/run", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            model,
-            solver,
-            T,
-            dt,
-            params: {}
-        })
-    });
-
-    const data = await response.json();
-
-    render(data);
-};
+});
 
 
-function render(data) {
+// Initialize common application logic
+function initializeApp() {
 
-    if (chart) chart.destroy();
+    // Set the current page in the navigation
+    setActiveNavigation();
 
-    const states = data.states || [];
-    if (!states.length) return;
+    // Initialize navigation
+    initializeNavigation();
 
-    const keys = new Set();
-
-    states.forEach(s => {
-        Object.keys(s || {}).forEach(k => keys.add(k));
-    });
-
-    const datasets = [...keys].map(key => {
-
-        return {
-            label: key,
-            data: states.map(s => s?.[key] ?? 0),
-            borderWidth: 2,
-            pointRadius: 0,
-            tension: 0.35
-        };
-    });
-
-    chart = new Chart(document.getElementById("chart"), {
-        type: "line",
-        data: {
-            labels: data.time || states.map((_, i) => i),
-            datasets
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    labels: { color: "#fff" }
-                }
-            },
-            scales: {
-                x: { ticks: { color: "#aaa" } },
-                y: { ticks: { color: "#aaa" } }
-            }
-        }
-    });
-
-    renderInfo(data);
 }
 
 
-function renderInfo(data) {
+// Highlight the current page in the navigation
+function setActiveNavigation() {
 
-    const container = document.getElementById("spikes");
-    const last = data.states[data.states.length - 1];
+    // Get the current URL path
+    const currentPath = window.location.pathname;
 
-    if (!last) {
-        container.innerHTML = "No data";
+
+    // Find all navigation links
+    const links = document.querySelectorAll(
+        ".sidebar a"
+    );
+
+
+    // Check every navigation link
+    links.forEach(link => {
+
+        // Get the link destination
+        const href = link.getAttribute("href");
+
+
+        // Skip links without href
+        if (!href) {
+            return;
+        }
+
+
+        // Remove the active class first
+        link.classList.remove("active");
+
+
+        // Check if this is the current page
+        if (
+            currentPath === href ||
+            (
+                currentPath === "/" &&
+                href === "/"
+            )
+        ) {
+
+            link.classList.add("active");
+
+        }
+
+    });
+
+}
+
+
+// Initialize navigation buttons
+function initializeNavigation() {
+
+    // Find all navigation links
+    const links = document.querySelectorAll(
+        ".sidebar a"
+    );
+
+
+    // Add a click handler to every link
+    links.forEach(link => {
+
+        link.addEventListener(
+            "click",
+            function () {
+
+                // Remove active state from all links
+                links.forEach(item => {
+                    item.classList.remove("active");
+                });
+
+
+                // Mark the clicked link as active
+                this.classList.add("active");
+
+            }
+        );
+
+    });
+
+}
+
+
+// Show a message inside an element
+function showMessage(
+    elementId,
+    message
+) {
+
+    // Find the element
+    const element =
+        document.getElementById(elementId);
+
+
+    // Stop if the element does not exist
+    if (!element) {
         return;
     }
 
-    let html = "<h3>Final state</h3>";
 
-    for (const k in last) {
-        html += `${k}: ${last[k]}<br>`;
+    // Display the message
+    element.textContent = message;
+
+}
+
+
+// Clear a message
+function clearMessage(elementId) {
+
+    // Find the element
+    const element =
+        document.getElementById(elementId);
+
+
+    // Stop if the element does not exist
+    if (!element) {
+        return;
     }
 
-    container.innerHTML = html;
+
+    // Clear the content
+    element.textContent = "";
+
 }
