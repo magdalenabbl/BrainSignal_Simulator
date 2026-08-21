@@ -28,6 +28,7 @@ async def train_ann(file: UploadFile = File(...)):
     result = ann_service.train_from_csv(content)
 
     # Return the result to FastAPI
+    # The result now also contains epochs, loss and accuracy
     return result
 
 

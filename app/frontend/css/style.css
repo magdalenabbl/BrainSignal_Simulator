@@ -305,6 +305,7 @@ body {
 
     background: rgba(8, 11, 18, 0.85);
 
+
     backdrop-filter: blur(10px);
 
     position: sticky;
@@ -314,6 +315,49 @@ body {
     z-index: 5;
 }
 
+.topbar nav {
+    display: flex;
+
+    align-items: center;
+
+    gap: 28px;
+}
+
+
+.topbar nav a {
+    color: var(--muted);
+
+   
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease;
+
+    padding: 8px 12px;
+
+    border-radius: 8px;
+}
+
+
+.topbar nav a:hover {
+    color: var(--text);
+
+    background: var(--panel-hover);
+}
+
+
+.topbar nav a.active {
+    color: var(--text);
+
+    background: var(--panel);
+
+    border: 1px solid var(--border);
+}
 
 .breadcrumb {
     color: var(--muted);
@@ -1529,3 +1573,312 @@ select:focus {
     }
 
 }
+
+/* =========================================================
+   ANN PAGE ONLY
+   ========================================================= */
+
+.ann-page {
+    padding: 34px;
+}
+
+
+/* Header */
+
+.ann-page .page-header {
+    margin-bottom: 32px;
+}
+
+.ann-page .page-label {
+    margin: 0 0 8px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.1em;
+
+    text-transform: uppercase;
+}
+
+.ann-page .page-header h1 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 30px;
+}
+
+.ann-page .page-header p:last-child {
+    color: var(--muted);
+
+    font-size: 14px;
+}
+
+
+/* Cards */
+
+.ann-page .card {
+    padding: 24px;
+
+    background: var(--panel);
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+}
+
+.ann-page .card-header {
+    margin-bottom: 18px;
+}
+
+.ann-page .card-label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: var(--muted);
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.1em;
+}
+
+.ann-page .card h2 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 18px;
+}
+
+.ann-page .description {
+    margin-bottom: 24px;
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+
+/* Forms */
+
+.ann-page .form-group {
+    margin-bottom: 18px;
+}
+
+.ann-page .form-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+.ann-page .form-group input {
+    box-sizing: border-box;
+
+    width: 100%;
+
+    padding: 11px 12px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    background: var(--panel-hover);
+
+    color: var(--text);
+
+    font-size: 13px;
+}
+
+.ann-page .form-group input:focus {
+    outline: none;
+
+    border-color: #56627a;
+}
+
+
+/* Buttons */
+
+.ann-page .primary-button {
+    padding: 11px 16px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 9px;
+
+    background: var(--text);
+
+    color: #080b12;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.ann-page .primary-button:hover {
+    opacity: 0.9;
+}
+
+
+/* Training status */
+
+.ann-page .status {
+    margin-top: 14px;
+
+    min-height: 20px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+
+/* Prediction */
+
+.ann-page .prediction-box {
+    margin-top: 22px;
+
+    padding: 16px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: var(--panel-hover);
+}
+
+.ann-page .prediction-box span {
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+.ann-page .prediction-box strong {
+    color: var(--text);
+
+    font-size: 20px;
+}
+
+
+/* CSV */
+
+.ann-page .code-example {
+    margin: 0;
+
+    padding: 18px;
+
+    overflow-x: auto;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: #080b12;
+
+    color: var(--muted);
+
+    font-family: monospace;
+
+    font-size: 12px;
+
+    line-height: 1.7;
+}
+
+
+/* Network status */
+
+.ann-page .stat-row {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 14px 0;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.ann-page .stat-row:last-child {
+    border-bottom: none;
+}
+
+.ann-page .stat-row span {
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+.ann-page .stat-row strong {
+    color: var(--text);
+
+    font-size: 13px;
+}
+/* =========================================================
+   ANN SIDEBAR NAVIGATION
+   ========================================================= */
+
+.ann-page ~ * {
+    /* Nothing */
+}
+
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.sidebar nav a {
+    display: block;
+
+    padding: 10px 12px;
+
+    border-radius: 8px;
+
+    color: var(--muted);
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        border 0.2s ease;
+}
+
+.sidebar nav a:hover {
+    color: var(--text);
+
+    background: var(--panel-hover);
+}
+
+.sidebar nav a.active {
+    color: var(--text);
+
+    background: var(--panel);
+
+    border: 1px solid var(--border);
+}
+

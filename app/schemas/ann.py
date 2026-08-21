@@ -15,3 +15,8 @@ class InferResponse(BaseModel):
 # Response returned after /train
 class TrainResponse(BaseModel):
     message: str
+
+    # Training information returned to the frontend
+    epochs: int
+    loss: List[float]
+    accuracy: float

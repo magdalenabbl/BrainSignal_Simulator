@@ -10,362 +10,713 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>BrainSignal Simulator - ANN</title>
+    <title>ANN | BrainSignal Simulator</title>
 
-    <!-- Main application styles -->
+    <!-- Main stylesheet -->
     <link
         rel="stylesheet"
-        href="/static/style.css"
+        href="/static/css/style.css"
     >
-
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 
 <body>
 
-    <!-- Main application container -->
-    <div class="app-container">
+    <div class="app">
 
 
-        <!-- Sidebar navigation -->
+        <!-- =====================================================
+             SIDEBAR
+             ===================================================== -->
+
         <aside class="sidebar">
+
+
+            <!-- Logo -->
 
             <div class="logo">
 
-                <h2>BrainSignal</h2>
+                <div class="logo-icon">
+                    B
+                </div>
 
-                <span>Simulator</span>
+                <div>
+
+                    <h2>
+                        BrainSignal
+                    </h2>
+
+                    <span>
+                        Simulator
+                    </span>
+
+                </div>
 
             </div>
 
 
             <!-- Navigation -->
-            <nav>
 
-                <a href="/">
-                    Dashboard
-                </a>
+            <nav class="navigation">
 
-                <a href="/static/dynamics.html">
-                    Simulation
-                </a>
+
+                <p class="nav-title">
+                    MAIN
+                </p>
+
 
                 <a
-                    href="/static/ann.html"
-                    class="active"
+                    class="nav-item"
+                    href="/"
                 >
-                    ANN
+
+                    <span>
+                        ⌂
+                    </span>
+
+                    Dashboard
+
                 </a>
 
-                <a href="/static/snn.html">
-                    SNN
+
+                <a
+                    class="nav-item"
+                    href="/static/dynamics.html"
+                >
+
+                    <span>
+                        ◈
+                    </span>
+
+                    Simulation
+
                 </a>
+
+
+                <p class="nav-title">
+                    NEURAL
+                </p>
+
+
+                <a
+                    class="nav-item active"
+                    href="/static/ann.html"
+                >
+
+                    <span>
+                        ◎
+                    </span>
+
+                    ANN Lab
+
+                </a>
+
+
+                <a
+                    class="nav-item"
+                    href="/static/snn.html"
+                >
+
+                    <span>
+                        ◉
+                    </span>
+
+                    SNN Lab
+
+                </a>
+
+
+                <p class="nav-title">
+                    DATA
+                </p>
+
+
+                <a
+                    class="nav-item"
+                    href="#"
+                >
+
+                    <span>
+                        ▦
+                    </span>
+
+                    Datasets
+
+                </a>
+
+
+                <a
+                    class="nav-item"
+                    href="#"
+                >
+
+                    <span>
+                        ◌
+                    </span>
+
+                    Analysis
+
+                </a>
+
 
             </nav>
+
+
+            <!-- Sidebar bottom -->
+
+            <div class="sidebar-bottom">
+
+
+                <a
+                    class="nav-item"
+                    href="#"
+                >
+
+                    <span>
+                        ⚙
+                    </span>
+
+                    Settings
+
+                </a>
+
+
+                <div class="system-status">
+
+                    <span class="status-dot"></span>
+
+                    <div>
+
+                        <strong>
+                            System online
+                        </strong>
+
+                        <small>
+                            FastAPI backend
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
 
         </aside>
 
 
 
-        <!-- Main content -->
-        <main class="main-content">
+        <!-- =====================================================
+             MAIN CONTENT
+             ===================================================== -->
+
+        <main class="main-content ann-page">
 
 
-            <!-- Page header -->
-            <header class="page-header">
+            <!-- Top bar -->
+
+            <header class="topbar">
+
 
                 <div>
 
-                    <p class="page-label">
-                        Neural Network
-                    </p>
+                    <span class="breadcrumb">
+                        BrainSignal
+                    </span>
 
-                    <h1>
-                        Artificial Neural Network
-                    </h1>
+                    <span class="breadcrumb-separator">
+                        /
+                    </span>
 
-                    <p>
-                        Train and test the neural network
-                        using your dataset.
-                    </p>
+                    <span id="current-page">
+                        ANN
+                    </span>
 
                 </div>
+
+
+                <div class="topbar-actions">
+
+
+                    <button
+                        class="icon-button"
+                        title="Notifications"
+                    >
+                        ♢
+                    </button>
+
+
+                    <button class="profile-button">
+
+
+                        <div class="avatar">
+                            M
+                        </div>
+
+
+                        <div class="profile-info">
+
+                            <strong>
+                                Simulator
+                            </strong>
+
+                            <span>
+                                Research mode
+                            </span>
+
+                        </div>
+
+
+                    </button>
+
+
+                </div>
+
 
             </header>
 
 
 
-            <!-- ANN dashboard -->
-            <section class="dashboard-grid">
+            <!-- =================================================
+                 ANN CONTENT
+                 ================================================= -->
+
+            <section class="screens">
 
 
-                <!-- Training card -->
-                <div class="card">
+                <section
+                    id="ann-screen"
+                    class="screen active-screen"
+                >
 
-                    <div class="card-header">
+
+                    <!-- Page header -->
+
+                    <div class="page-header">
+
 
                         <div>
 
-                            <span class="card-label">
-                                TRAINING
+                            <span class="page-label">
+                                NEURAL NETWORK
                             </span>
 
-                            <h2>
-                                Train ANN
-                            </h2>
+
+                            <h1>
+                                Artificial Neural Network
+                            </h1>
+
+
+                            <p>
+                                Train and test the neural network
+                                using your dataset.
+                            </p>
 
                         </div>
 
-                    </div>
-
-
-                    <p class="description">
-
-                        Upload a CSV dataset containing
-                        the training examples.
-
-                    </p>
-
-
-                    <!-- CSV upload -->
-                    <div class="form-group">
-
-                        <label for="dataset">
-                            Training dataset
-                        </label>
-
-                        <input
-                            type="file"
-                            id="dataset"
-                            accept=".csv"
-                        >
 
                     </div>
 
 
-                    <!-- Train button -->
-                    <button
-                        class="primary-button"
-                        onclick="trainANN()"
-                    >
-                        Train Network
-                    </button>
+
+                    <!-- ANN dashboard -->
+
+                    <section class="dashboard-grid">
 
 
-                    <!-- Training status -->
-                    <div
-                        id="trainStatus"
-                        class="status"
-                    >
-                    </div>
+                        <!-- =================================================
+                             TRAINING CARD
+                             ================================================= -->
 
-                </div>
+                        <div class="card">
 
 
+                            <div class="card-header">
 
-                <!-- Inference card -->
-                <div class="card">
 
-                    <div class="card-header">
+                                <div>
 
-                        <div>
+                                    <span class="card-label">
+                                        TRAINING
+                                    </span>
 
-                            <span class="card-label">
-                                INFERENCE
-                            </span>
 
-                            <h2>
-                                Test ANN
-                            </h2>
+                                    <h2>
+                                        Train ANN
+                                    </h2>
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <p class="description">
+
+                                Upload a CSV dataset containing
+                                the training examples.
+
+                            </p>
+
+
+
+                            <!-- CSV upload -->
+
+                            <div class="form-group">
+
+
+                                <label for="dataset">
+                                    Training dataset
+                                </label>
+
+
+                                <input
+                                    type="file"
+                                    id="dataset"
+                                    accept=".csv"
+                                >
+
+
+                            </div>
+
+
+
+                            <!-- Train button -->
+
+                            <button
+                                class="primary-button"
+                                onclick="trainANN()"
+                            >
+
+                                Train Network
+
+                            </button>
+
+
+
+                            <!-- Training status -->
+
+                            <div
+                                id="trainStatus"
+                                class="status"
+                            >
+                            </div>
+
 
                         </div>
 
-                    </div>
+                        <!-- =================================================
+                            TRAINING PROGRESS
+                            ================================================= -->
+
+                        <div class="card">
+
+                            <div class="card-header">
+
+                                <div>
+
+                                    <span class="card-label">
+                                        TRAINING
+                                    </span>
+
+                                    <h2>
+                                        Training progress
+                                    </h2>
+
+                                </div>
+
+                            </div>
 
 
-                    <p class="description">
+                            <p class="description">
 
-                        Enter new input values and use
-                        the already trained network.
+                                Loss during neural network training.
 
-                    </p>
-
-
-                    <!-- First input -->
-                    <div class="form-group">
-
-                        <label for="input1">
-                            Input 1
-                        </label>
-
-                        <input
-                            type="number"
-                            id="input1"
-                            step="any"
-                            value="0"
-                        >
-
-                    </div>
+                            </p>
 
 
-                    <!-- Second input -->
-                    <div class="form-group">
+                            <div class="chart-container">
 
-                        <label for="input2">
-                            Input 2
-                        </label>
+                                <canvas id="trainingChart"></canvas>
 
-                        <input
-                            type="number"
-                            id="input2"
-                            step="any"
-                            value="1"
-                        >
-
-                    </div>
-
-
-                    <!-- Infer button -->
-                    <button
-                        class="primary-button"
-                        onclick="inferANN()"
-                    >
-                        Run Inference
-                    </button>
-
-
-                    <!-- Prediction -->
-                    <div
-                        id="prediction"
-                        class="prediction-box"
-                    >
-
-                        <span>
-                            Prediction
-                        </span>
-
-                        <strong id="predictionValue">
-                            -
-                        </strong>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- Dataset information -->
-                <div class="card">
-
-                    <div class="card-header">
-
-                        <div>
-
-                            <span class="card-label">
-                                DATASET
-                            </span>
-
-                            <h2>
-                                Expected CSV format
-                            </h2>
+                            </div>
 
                         </div>
 
-                    </div>
+                        <!-- =================================================
+                             INFERENCE CARD
+                             ================================================= -->
+
+                        <div class="card">
 
 
-                    <p class="description">
-
-                        The CSV file should contain
-                        two input columns and one target.
-
-                    </p>
+                            <div class="card-header">
 
 
-                    <pre class="code-example">input_1,input_2,target
+                                <div>
+
+                                    <span class="card-label">
+                                        INFERENCE
+                                    </span>
+
+
+                                    <h2>
+                                        Test ANN
+                                    </h2>
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <p class="description">
+
+                                Enter new input values and use
+                                the already trained network.
+
+                            </p>
+
+
+
+                            <!-- Input 1 -->
+
+                            <div class="form-group">
+
+
+                                <label for="input1">
+                                    Input 1
+                                </label>
+
+
+                                <input
+                                    type="number"
+                                    id="input1"
+                                    step="any"
+                                    value="0"
+                                >
+
+
+                            </div>
+
+
+
+                            <!-- Input 2 -->
+
+                            <div class="form-group">
+
+
+                                <label for="input2">
+                                    Input 2
+                                </label>
+
+
+                                <input
+                                    type="number"
+                                    id="input2"
+                                    step="any"
+                                    value="1"
+                                >
+
+
+                            </div>
+
+
+
+                            <!-- Infer button -->
+
+                            <button
+                                class="primary-button"
+                                onclick="inferANN()"
+                            >
+
+                                Run Inference
+
+                            </button>
+
+
+
+                            <!-- Prediction -->
+
+                            <div
+                                id="prediction"
+                                class="prediction-box"
+                            >
+
+                                <span>
+                                    Prediction
+                                </span>
+
+
+                                <strong id="predictionValue">
+                                    -
+                                </strong>
+
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- =================================================
+                             DATASET INFORMATION
+                             ================================================= -->
+
+                        <div class="card">
+
+
+                            <div class="card-header">
+
+
+                                <div>
+
+                                    <span class="card-label">
+                                        DATASET
+                                    </span>
+
+
+                                    <h2>
+                                        Expected CSV format
+                                    </h2>
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <p class="description">
+
+                                The CSV file should contain
+                                two input columns and one target.
+
+                            </p>
+
+
+
+                            <pre class="code-example">input_1,input_2,target
 0,0,0
 0,1,1
 1,0,1
 1,1,1</pre>
 
-                </div>
-
-
-
-                <!-- ANN information -->
-                <div class="card">
-
-                    <div class="card-header">
-
-                        <div>
-
-                            <span class="card-label">
-                                NETWORK
-                            </span>
-
-                            <h2>
-                                ANN Status
-                            </h2>
 
                         </div>
 
-                    </div>
 
 
-                    <div class="stat-row">
+                        <!-- =================================================
+                             ANN INFORMATION
+                             ================================================= -->
 
-                        <span>
-                            Architecture
-                        </span>
-
-                        <strong>
-                            2 - 2 - 1
-                        </strong>
-
-                    </div>
+                        <div class="card">
 
 
-                    <div class="stat-row">
-
-                        <span>
-                            Activation
-                        </span>
-
-                        <strong>
-                            Sigmoid
-                        </strong>
-
-                    </div>
+                            <div class="card-header">
 
 
-                    <div class="stat-row">
+                                <div>
 
-                        <span>
-                            Training
-                        </span>
+                                    <span class="card-label">
+                                        NETWORK
+                                    </span>
 
-                        <strong id="networkStatus">
-                            Not trained
-                        </strong>
 
-                    </div>
+                                    <h2>
+                                        ANN Status
+                                    </h2>
 
-                </div>
+                                </div>
+
+
+                            </div>
+
+
+
+                            <div class="stat-row">
+
+
+                                <span>
+                                    Architecture
+                                </span>
+
+
+                                <strong>
+                                    2 - 2 - 1
+                                </strong>
+
+
+                            </div>
+
+
+
+                            <div class="stat-row">
+
+
+                                <span>
+                                    Activation
+                                </span>
+
+
+                                <strong>
+                                    Sigmoid
+                                </strong>
+
+
+                            </div>
+
+
+
+                            <div class="stat-row">
+
+
+                                <span>
+                                    Training
+                                </span>
+
+
+                                <strong id="networkStatus">
+                                    Not trained
+                                </strong>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </section>
+
+
+                </section>
+
 
             </section>
 
 
         </main>
 
+
     </div>
 
 
 
-    <!-- ANN JavaScript -->
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script src="/static/js/ann.js"></script>
 
-
-    <!-- Common application JavaScript -->
     <script src="/static/js/app.js"></script>
 
 

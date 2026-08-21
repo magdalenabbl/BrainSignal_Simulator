@@ -42,14 +42,28 @@ class ANNService:
             )
 
         # Train the neural network
+        epochs = 5000
+
         self.ann.train(
             training_data,
-            epochs=5000
+            epochs=epochs
         )
 
         # Return training result to API
         return {
-            "message": "Training completed"
+            "message": "Training completed",
+
+            # Return the number of epochs used
+            # so the frontend can display it.
+            "epochs": epochs,
+
+            # Return the loss recorded during training
+            # so the frontend can create a loss graph.
+            "loss": self.ann.loss_history,
+
+            # Return the final accuracy of the network
+            # so the frontend can display the result.
+            "accuracy": self.ann.accuracy
         }
 
     # Use the already trained network like [0, 1]

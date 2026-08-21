@@ -2,6 +2,10 @@
 let lastPrediction = null;
 
 
+// Store the training loss chart
+let trainingChart = null;
+
+
 // Train the ANN using an uploaded CSV file
 window.trainANN = async function () {
 
@@ -63,7 +67,133 @@ window.trainANN = async function () {
     document.getElementById("networkStatus").textContent =
         "Trained";
 
+
+    // Display the training information
+    // returned by ANNService.
+    renderTrainingInfo(data);
+
+
+    // Display the training loss graph.
+    renderTrainingChart(data.loss);
+
 };
+
+
+// Display training information
+function renderTrainingInfo(data) {
+
+    // Find the training status element
+    const container =
+        document.getElementById("trainStatus");
+
+
+    // Display the number of epochs and accuracy
+    // together with the training message.
+    container.textContent =
+        `${data.message} | ` +
+        `Epochs: ${data.epochs} | ` +
+        `Accuracy: ${(data.accuracy * 100).toFixed(2)}%`;
+}
+
+
+// Display the training loss as a line chart
+function renderTrainingChart(loss) {
+
+    // Find the canvas used for the training chart
+    const canvas =
+        document.getElementById("trainingChart");
+
+
+    // Stop if the canvas does not exist
+    if (!canvas) {
+        return;
+    }
+
+
+    // Destroy the previous chart
+    if (trainingChart) {
+        trainingChart.destroy();
+    }
+
+
+    // Create one label for every training epoch
+    const labels = loss.map(
+        (_, index) => index + 1
+    );
+
+
+    // Create the Chart.js line chart
+    trainingChart = new Chart(
+        canvas,
+        {
+
+            type: "line",
+
+            data: {
+
+                labels: labels,
+
+                datasets: [
+                    {
+                        label: "Training Loss",
+
+                        data: loss,
+
+                        borderWidth: 2,
+
+                        pointRadius: 0,
+
+                        tension: 0.35
+                    }
+                ]
+            },
+
+            options: {
+
+                responsive: true,
+
+                plugins: {
+
+                    legend: {
+
+                        labels: {
+                            color: "#fff"
+                        }
+                    }
+                },
+
+                scales: {
+
+                    x: {
+
+                        title: {
+                            display: true,
+                            text: "Epoch",
+                            color: "#aaa"
+                        },
+
+                        ticks: {
+                            color: "#aaa"
+                        }
+                    },
+
+                    y: {
+
+                        title: {
+                            display: true,
+                            text: "Loss",
+                            color: "#aaa"
+                        },
+
+                        ticks: {
+                            color: "#aaa"
+                        }
+                    }
+                }
+            }
+        }
+    );
+}
 
 
 // Use the trained ANN to make a prediction
