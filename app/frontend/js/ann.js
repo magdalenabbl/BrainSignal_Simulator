@@ -1,3 +1,4 @@
+console.log("THIS IS MY NEW ANN.JS");
 // Store the result of the last prediction
 let lastPrediction = null;
 
@@ -48,6 +49,11 @@ window.trainANN = async function () {
     // Convert the API response from JSON
     const data = await response.json();
 
+console.log("TRAIN RESPONSE:", data);
+console.log("LOSS:", data.loss);
+console.log("EPOCHS:", data.epochs);
+console.log("ACCURACY:", data.accuracy);
+
 
     // Check if the request was successful
     if (!response.ok) {
@@ -74,8 +80,16 @@ window.trainANN = async function () {
 
 
     // Display the training loss graph.
+    // renderTrainingChart(data.loss);
+    if (Array.isArray(data.loss)) {
+
     renderTrainingChart(data.loss);
 
+} else {
+
+    console.log("No loss data received.");
+
+}
 };
 
 
@@ -230,6 +244,7 @@ window.inferANN = async function () {
     // Convert the API response to JavaScript object
     const data = await response.json();
 
+    console.log("TRAIN RESPONSE:", data);
 
     // Check for an API error
     if (!response.ok) {
